@@ -19,7 +19,7 @@ public:
 
 	string action(vector<vector<int8_t>>& Map) {
         calculate_score(Map);
-        //ÓãÌÁ²ÉÑùËã·¨
+        //æ°´å¡˜æŠ½æ ·ç®—æ³•
         srand((unsigned int)time(NULL));
         int maxscore = INT_MIN, ret_row = 0, ret_col = 0, max_num = 0;
         for (int row = 0; row < Map_Size; row++) {
@@ -41,43 +41,43 @@ public:
 	}
 
     void calculate_score(vector<vector<int8_t>>&Map) {
-        int personNum; // Íæ¼ÒÁ¬³É×ÓµÄ¸öÊı
-        int botNum; // AIÁ¬³É×ÓµÄ¸öÊı
-        int emptyNum; // ¸÷·½Ïò¿Õ°×Î»µÄ¸öÊı
+        int personNum; // ç©å®¶è¿æˆå­çš„ä¸ªæ•°
+        int botNum; // AIè¿æˆå­çš„ä¸ªæ•°
+        int emptyNum; // å„æ–¹å‘ç©ºç™½ä½çš„ä¸ªæ•°
 
         score.clear();
         score.resize(Map_Size, vector<int>(Map_Size, 0));
 
         for (int row = 0; row < Map_Size; row++) {
             for (int col = 0; col < Map_Size; col++) {
-                // ½ö½ö¼ÆËã¿Õ°×µã
+                // ä»…ä»…è®¡ç®—ç©ºç™½ç‚¹
                 if (Map[row][col] == 0) {
-                    // °Ë¸ö·½Ïò
+                    // å…«ä¸ªæ–¹å‘
                     for(auto next:dir) {
                         int x = next[0], y = next[1];
-                        // ÖØÖÃ
+                        // é‡ç½®
                         personNum = 0;
                         botNum = 0;
                         emptyNum = 0;
 
-                        // ·ÀÓù
-                        // ÕıĞ±Ïß
+                        // é˜²å¾¡
+                        // æ­£æ–œçº¿
                         for (int i = 1; i <= 4; i++) {
                             // other
                             if (row + i * y >= 0 && row + i * y < Map_Size &&
                                 col + i * x >= 0 && col + i * x < Map_Size &&
                                 Map[row + i * y][col + i * x] == other) personNum++;
-                            // ¿Õ°×Î»
+                            // ç©ºç™½ä½
                             else if (row + i * y >= 0 && row + i * y < Map_Size &&
                                 col + i * x >= 0 && col + i * x < Map_Size &&
                                 Map[row + i * y][col + i * x] == 0) {
                                 emptyNum++;
-                                break;//ÒÑ¾­¶ÏÁË ¿ÉÒÔÍË³ö
+                                break;//å·²ç»æ–­äº† å¯ä»¥é€€å‡º
                             }
-                            // ³ö±ß½ç
+                            // å‡ºè¾¹ç•Œ
                             else break;
                         }
-                        // ¸ºĞ±Ïß
+                        // è´Ÿæ–œçº¿
                         for (int i = 1; i <= 4; i++){
                             // other
                             if (row - i * y >= 0 && row - i * y < Map_Size &&
@@ -85,34 +85,34 @@ public:
                                 Map[row - i * y][col - i * x] == other) {
                                 personNum++;
                             }
-                            // ¿Õ°×Î»
+                            // ç©ºç™½ä½
                             else if (row - i * y >= 0 && row - i * y < Map_Size &&
                                 col - i * x >= 0 && col - i * x < Map_Size &&
                                 Map[row - i * y][col - i * x] == 0) {
                                 emptyNum++;
-                                break;//ÒÑ¾­¶ÏÁË ¿ÉÒÔÍË³ö
+                                break;//å·²ç»æ–­äº† å¯ä»¥é€€å‡º
                             }
-                            // ³ö±ß½ç
+                            // å‡ºè¾¹ç•Œ
                             else break;           
                         }
 
-                        //ÓÅÏÈ·ÀÓù
+                        //ä¼˜å…ˆé˜²å¾¡
                         if (personNum == 1) score[row][col] += 10;
                         else if (personNum == 2){
-                            if (emptyNum == 1) score[row][col] += 30;//Ö»ÓĞÒ»¶Ë
-                            else if (emptyNum == 2) score[row][col] += 40;//Á½¶Ë¶¼ÓĞ
+                            if (emptyNum == 1) score[row][col] += 30;//åªæœ‰ä¸€ç«¯
+                            else if (emptyNum == 2) score[row][col] += 40;//ä¸¤ç«¯éƒ½æœ‰
                         }
                         else if (personNum == 3){
                             if (emptyNum == 1) score[row][col] += 60;
                             else if (emptyNum == 2) score[row][col] += 1200;
                         }
-                        else if (personNum == 4) score[row][col] += 10100;//Îñ±ØÒªÀ¹½Ø
+                        else if (personNum == 4) score[row][col] += 10100;//åŠ¡å¿…è¦æ‹¦æˆª
 
-                        // ½øĞĞÒ»´ÎÇå¿Õ
+                        // è¿›è¡Œä¸€æ¬¡æ¸…ç©º
                         emptyNum = 0;
 
-                        // ½ø¹¥
-                        // ÕıĞ±Ïß
+                        // è¿›æ”»
+                        // æ­£æ–œçº¿
                         for (int i = 1; i <= 4; i++){
                             if (row + i * y >= 0 && row + i * y < Map_Size &&
                                 col + i * x >= 0 && col + i * x < Map_Size &&
@@ -126,7 +126,7 @@ public:
                             else break;
                                 
                         }
-                        // ¸ºĞ±Ïß
+                        // è´Ÿæ–œçº¿
                         for (int i = 1; i <= 4; i++)
                         {
                             if (row - i * y >= 0 && row - i * y < Map_Size &&
@@ -141,7 +141,7 @@ public:
                             else break;
                         }
 
-                        //½ø¹¥
+                        //è¿›æ”»
                         if (botNum == 0) score[row][col] += 5;
                         else if (botNum == 1) score[row][col] += 10;
                         else if (botNum == 2){
